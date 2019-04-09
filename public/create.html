@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Chatter</title>
+    <title>Poll Now / Create Poll</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -22,11 +22,14 @@
         color:white;
         background-color: rgb(54,81,107);
       }
+      button {
+        float: right;
+      }
 
 </style>
 
   </head>
-
+<body>
   <div class="jumbotron jumbotron-fluid">
   <div class="container">
     <center> <h1 class="display-4">Create a Poll</h1> </center>
@@ -41,39 +44,62 @@
      <form>
         <div class="form-group">
           <label for="formGroupExampleInput">Question</label>
-          <input type="text" class="form-control" id="formGroupExampleInput" placeholder="...">
+          <input id="question" type="text" class="form-control"  placeholder="..." autocomplete="off">
         </div>
         <div class="form-group">
-          <label for="formGroupExampleInput2">Answer</label>
-          <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="...">
+          <label for="formGroupExampleInput2">Answer 1</label>
+          <input id="answer1"type="text" class="form-control" placeholder="..." autocomplete="off">
         </div>
         <div class="form-group">
-          <label for="formGroupExampleInput2">Answer</label>
-          <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="...">
+          <label for="formGroupExampleInput2">Answer 2</label>
+          <input id="answer2" type="text" class="form-control" placeholder="..." autocomplete="off">
         </div>
 
         <div class="form-group">
-          <label for="formGroupExampleInput2">Answer</label>
-          <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="...">
+          <label for="formGroupExampleInput2">Answer 3</label>
+          <input id="answer3" type="text" class="form-control" placeholder="..." autocomplete="off">
         </div>
-
+        <div class="form-group">
+          <label for="formGroupExampleInput2">Answer 4</label>
+          <input id="answer4" type="text" class="form-control" placeholder="..." autocomplete="off">
+        </div>
         <div class="col-auto">
-      <button type="submit" class="btn btn-primary mb-2" id="sub">Submit</button>
+      <button type="submit" class="btn btn-primary mb-2" >Submit</button>
     </div>
     </form>
 </div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+
+  $('form').submit(() => {
+    let question = $('#question').val();
+    let answer1 = $('#answer1').val();
+    let answer2 = $('#answer2').val();
+    let answer3 = $('#answer3').val();
+    let answer4 = $('#answer4').val();
+    socket.emit('message', {question,answer1, answer2, answer3, answer4});
+    $('#question').val('');
+    $('#answer1').val('');
+    $('#answer2').val('');
+    $('#answer3').val('');
+    $('#answer4').val('');
+    return false;
+  });
+
+  //socket.on('connect', () => {
+    //socket.emit('message', 'user connected');
+  //})
 
 
 
+  socket.on('info', (msg) => {
+  console.log(msg.question);
+  })
+</script>
 
-
-
-
-
-
-
-
-
-
-
+</body>
 </html>

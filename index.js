@@ -17,29 +17,14 @@ app.get('/create', (req, res) => {
   res.sendFile(__dirname + "/public/create.html");
 });
 
-app.get('/swift', (req, res) => {
-  res.sendFile(__dirname + "/public/swift.html");
+app.get('/question', (req, res) => {
+  res.sendFile(__dirname + "/public/question.html");
 });
 
-app.get('/css', (req, res) => {
-  res.sendFile(__dirname + "/public/css.html");
-});
-//tech namespace
-const tech = io.of('/tech');
-
-//Start
-tech.on('connection', (socket) => {
-
-  socket.on('join', (data) => {
-    socket.join(data.room);
-    tech.in(data.room).emit("message",`New user joined ${data.room} room!`);
-  }); // emit to everyone in room
+io.on('connection', (socket) => {
   socket.on('message', (data) => {
-    console.log(`message: ${data.msg}`);
-    tech.in(data.room).emit('message', data.msg);
+    console.log(`message: ${data.question}`);
+    socket.broadcast.emit('info', data);
   });
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-    tech.emit('message', 'user disconnected');
-  })
+
 });
