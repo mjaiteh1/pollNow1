@@ -35,7 +35,8 @@
 
   <div class="container" id="mainContainer">
 
-    <h1 id='quest'style="display:none;"> </h1>
+    <h4 id='quest'style="display:none;"> </h4>
+    <br>
     <button id='a1' type="button" class="btn btn-secondary btn-lg btn-block" style="display:none;">Block level button</button>
     <button id='a2' type="button" class="btn btn-secondary btn-lg btn-block" style="display:none;">Block level button</button>
     <button id='a3' type="button" class="btn btn-secondary btn-lg btn-block" style="display:none;">Block level button</button>
@@ -54,7 +55,7 @@
 
     socket.on('info', (data) => {
       //Showing the question
-      $('#quest').text = data.question;
+      $('#quest').text(data.question);
       $('#quest').show();
       //Showing the answers
       $('#a1').text(data.answer1);
