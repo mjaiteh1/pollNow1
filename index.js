@@ -7,8 +7,6 @@ const port = 3000;
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 })
-
-
 app.get('/', (req, res) => {
   res.sendFile(__dirname + "/public/main.html");
 });
@@ -21,10 +19,12 @@ app.get('/question', (req, res) => {
   res.sendFile(__dirname + "/public/question.html");
 });
 
+app.get('/results', (req,res) => {
+    res.sendFile(__dirname + "/public/results.html");
+});
+
 io.on('connection', (socket) => {
   socket.on('message', (data) => {
-    console.log(`message: ${data.question}`);
     socket.broadcast.emit('info', data);
   });
-
 });

@@ -44,24 +44,24 @@
      <form>
         <div class="form-group">
           <label for="formGroupExampleInput">Question</label>
-          <input id="question" type="text" class="form-control"  placeholder="..." autocomplete="off">
+          <input id="question" type="text" class="form-control"  autocomplete="off">
         </div>
         <div class="form-group">
           <label for="formGroupExampleInput2">Answer 1</label>
-          <input id="answer1"type="text" class="form-control" placeholder="..." autocomplete="off">
+          <input id="answer1"type="text" class="form-control" autocomplete="off">
         </div>
         <div class="form-group">
           <label for="formGroupExampleInput2">Answer 2</label>
-          <input id="answer2" type="text" class="form-control" placeholder="..." autocomplete="off">
+          <input id="answer2" type="text" class="form-control"  autocomplete="off">
         </div>
 
         <div class="form-group">
           <label for="formGroupExampleInput2">Answer 3</label>
-          <input id="answer3" type="text" class="form-control" placeholder="..." autocomplete="off">
+          <input id="answer3" type="text" class="form-control"  autocomplete="off">
         </div>
         <div class="form-group">
           <label for="formGroupExampleInput2">Answer 4</label>
-          <input id="answer4" type="text" class="form-control" placeholder="..." autocomplete="off">
+          <input id="answer4" type="text" class="form-control" autocomplete="off">
         </div>
         <div class="col-auto">
       <button type="submit" class="btn btn-primary mb-2" >Submit</button>
@@ -90,15 +90,6 @@
     return false;
   });
 
-  //socket.on('connect', () => {
-    //socket.emit('message', 'user connected');
-  //})
-
-
-
-  socket.on('info', (msg) => {
-  console.log(msg.question);
-  })
 </script>
 
 </body>
