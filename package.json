@@ -10,8 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.5.4",
+    "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "mongoose": "^5.5.0",
+    "mongoose": "^5.5.2",
     "nodemon": "^1.18.10",
     "socket.io": "^2.2.0"
   },
