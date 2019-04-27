@@ -1,0 +1,18 @@
+.jumbotron {
+  font-family: 'Dokdo', cursive;
+  background-color: rgb(54,81,107);
+  color:white;
+}
+#g {
+    height:10px;
+    width:100%;
+}
+#sub {
+  float:right;
+  margin-left:60px;
+  color:white;
+  background-color: rgb(54,81,107);
+}
+button {
+  float: right;
+}

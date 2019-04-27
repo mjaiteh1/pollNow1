@@ -1,48 +1,25 @@
-const app = require("express")();
+const express = require('express');
+const app = express();
+const path = require('path');
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
+const bodyParser = require('body-parser')
 const port = 3000;
 
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
-
-const url = 'mongodb://localhost:27017';
-const dbName = 'pollNow';
-
-let db;
-(async function() {
-  const client = new MongoClient(url,{ useNewUrlParser: true });
-
-  try {
-    await client.connect();
-    console.log("Connected correctly to server");
-
-    const db = client.db(dbName);
-
-    // Insert a single document
-    let r = await db.collection('inserts').insertOne({s:1});
-    assert.equal(1, r.insertedCount);
-
-    // Insert multiple documents
-    r = await db.collection('inserts').insertMany([{a:2}, {b:3}]);
-    assert.equal(2, r.insertedCount);
-  } catch (err) {
-    console.log(err.stack);
-  }
-
-  // Close connection
-  client.close();
-})();
-
-let r =  db.collection('inserts').insertOne({s:1});
-assert.equal(2, r.insertedCount);
-
-
-
+//database connection
+const Poll = require("./models/Poll");
+const connect = require("./dbconnect");
 
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 })
+//Use to serve up static files
+app.use(express.static(path.join(__dirname, '/public')));
+
+app.use(express.static(__dirname));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}))
+
 app.get('/', (req, res) => {
   res.sendFile(__dirname + "/public/main.html");
 });
@@ -59,8 +36,27 @@ app.get('/results', (req,res) => {
     res.sendFile(__dirname + "/public/results.html");
 });
 
+app.get('/getPolls', (req, res, next) => {
+
+  res.setHeader("Content-Type", "application/json");
+  res.statusCode = 200;
+
+  Poll.find({}, (err, polls) => {
+    res.send(polls);
+  });
+
+});
+
 io.on('connection', (socket) => {
   socket.on('message', (data) => {
     socket.broadcast.emit('info', data);
+
+    //save chat to the database
+    connect.then(db  =>  {
+    let  newPoll  =  new Poll(data);
+    newPoll.save();
+
+
   });
+});
 });

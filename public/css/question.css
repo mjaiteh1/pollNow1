@@ -1,0 +1,17 @@
+.jumbotron {
+  font-family: 'Dokdo', cursive;
+  background-color: rgb(54,81,107);
+  color:white;
+}
+#g {
+    height:60px;
+    width:100%;
+}
+
+button {
+  float: right;
+}
+h1 {
+  font-family: 'Dokdo', cursive;
+
+}
