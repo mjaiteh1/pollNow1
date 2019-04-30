@@ -8,6 +8,7 @@ const port = 3000;
 
 //database connection
 const Poll = require("./models/Poll");
+const PollAnswers = require("./models/PollAnswers");
 const connect = require("./dbconnect");
 
 server.listen(port, () => {
@@ -36,16 +37,31 @@ app.get('/results', (req,res) => {
     res.sendFile(__dirname + "/public/results.html");
 });
 
+//Request data in database
 app.get('/getPolls', (req, res, next) => {
-
   res.setHeader("Content-Type", "application/json");
   res.statusCode = 200;
-
+  //Getting data & sending to client
   Poll.find({}, (err, polls) => {
-    res.send(polls);
+    res.send(polls[polls.length-1]);
   });
+});
+
+//Update Question with Votes
+app.put('/updatePoll/:question', (req, res, next) => {
+  let question = req.params.question;
+  let choice = req.body.answer;
+  pollChoice.findOneAndUpdate({question : question}, {$inc : {choice : 1}});
 
 });
+// Error Handler for 404 Pages
+app.use(function(req, res, next) {
+    let error404 = new Error('Route Not Found');
+    error404.status = 404;
+    next(error404);
+});
+
+
 
 io.on('connection', (socket) => {
   socket.on('message', (data) => {
@@ -55,6 +71,15 @@ io.on('connection', (socket) => {
     connect.then(db  =>  {
     let  newPoll  =  new Poll(data);
     newPoll.save();
+
+    let pollChoice = new PollAnswers({question: data.question, answer1: 0, answer2: 0, answer3: 0, answer4: 0 });
+    pollChoice.save();
+
+
+    //Poll.deleteMany({}, function (err) {
+  //if (err) return handleError(err);
+  // deleted at most one tank document
+//});
 
 
   });

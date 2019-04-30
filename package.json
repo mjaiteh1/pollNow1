@@ -12,6 +12,7 @@
   "dependencies": {
     "bluebird": "^3.5.4",
     "body-parser": "^1.18.3",
+    "chart.js": "^2.8.0",
     "express": "^4.16.4",
     "mongoose": "^5.5.3",
     "nodemon": "^1.18.10",
