@@ -18,12 +18,15 @@ getVotes();
 
 window.onload = function() {
 
-  setTimeout(function() {
+  setTimeout(async function() {
     let info = data[data.length-1];
     var node = document.createElement("H3");
     var textnode = document.createTextNode(info.question);
     node.appendChild(textnode);
     document.getElementById("g").appendChild(node);
+    if (!window.votes) {
+      await getVotes();
+    }
     var ctx = document.getElementById('myChart');
     var myChart = new Chart(ctx, {
         type: 'bar',
