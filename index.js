@@ -61,26 +61,21 @@ app.get('/getPollAnswers', (req, res, next) => {
 app.put('/updatePoll', (req, res, next) => {
   let name = req.body.name;
   let query = { _id: req.body.id};
-  PollAnswers.findOneAndUpdate(query,
-    { $inc: {answer4: 1000} },
-    {
-      new: true,                       // return updated doc
-      runValidators: true              // validate before update
-    })
-  .then(doc => {
-    console.log(doc);
-    console.log("hello");
-  })
-  .catch(err => {
-    console.error(err);
-  });
+
+  PollAnswers.findOneAndUpdate(
+         query,
+         { $inc: {[name]: 1}},
+         { new: true, runValidators: true  },
+         (err, updatedPoll ) => {
+             console.log(updatedPoll);
+             res.send(updatedPoll);
+         }
+     );
+})
 
 
 
-PollAnswers.find({}, (err, polls) => {
-  res.send(polls);
-});
-});
+
 // Error Handler for 404 Pages
 app.use(function(req, res, next) {
     let error404 = new Error('Route Not Found');
