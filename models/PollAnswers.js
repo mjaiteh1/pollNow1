@@ -7,16 +7,20 @@ const pollAnswersSchema = new Schema(
       type:String
     },
     answer1: {
-      type:Number
+      type:Number,
+      default:0
     },
     answer2: {
-      type:Number
+      type:Number,
+      default:0
     },
     answer3: {
-      type:Number
+      type:Number,
+      default:0
     },
     answer4: {
-      type:Number
+      type:Number,
+      default:0
     }
 
 });

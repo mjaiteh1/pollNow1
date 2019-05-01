@@ -11,6 +11,9 @@ const Poll = require("./models/Poll");
 const PollAnswers = require("./models/PollAnswers");
 const connect = require("./dbconnect");
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}))
+
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 })
@@ -18,8 +21,6 @@ server.listen(port, () => {
 app.use(express.static(path.join(__dirname, '/public')));
 
 app.use(express.static(__dirname));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}))
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + "/public/main.html");
@@ -43,15 +44,21 @@ app.get('/getPolls', (req, res, next) => {
   res.statusCode = 200;
   //Getting data & sending to client
   Poll.find({}, (err, polls) => {
-    res.send(polls[polls.length-1]);
+    res.send(polls);
   });
 });
 
 //Update Question with Votes
-app.put('/updatePoll/:question', (req, res, next) => {
-  let question = req.params.question;
-  let choice = req.body.answer;
-  pollChoice.findOneAndUpdate({question : question}, {$inc : {choice : 1}});
+app.put('/updatePoll', (req, res, next) => {
+  let name = req.body.name;
+  PollAnswers.findOneAndUpdate(
+  {question: req.body.question},
+  {$inc: {name: 1}},
+  {new: true}
+);
+  PollAnswers.find({}, (err, answers) => {
+    res.send(answers);
+  });
 
 });
 // Error Handler for 404 Pages
@@ -72,7 +79,7 @@ io.on('connection', (socket) => {
     let  newPoll  =  new Poll(data);
     newPoll.save();
 
-    let pollChoice = new PollAnswers({question: data.question, answer1: 0, answer2: 0, answer3: 0, answer4: 0 });
+    let pollChoice = new PollAnswers({question: data.question});
     pollChoice.save();
 
 

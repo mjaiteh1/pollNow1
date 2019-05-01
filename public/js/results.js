@@ -5,8 +5,8 @@ window.data;
 const getData = async () => {
   let response = await fetch('getPolls');
   window.data = await response.json();
-  console.log(data.question);
-  console.log(data);
+  //console.log(data.question);
+  //console.log(data);
 
 }
 getData();
@@ -17,17 +17,17 @@ getData();
 window.onload = function() {
 
   setTimeout(function() {
+    let info = data[data.length-1];
     var node = document.createElement("H3");
-    var textnode = document.createTextNode(data.question);
+    var textnode = document.createTextNode(info.question);
     node.appendChild(textnode);
     document.getElementById("g").appendChild(node);
-
 
     var ctx = document.getElementById('myChart');
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: [data.answer1, data.answer2, data.answer3, data.answer4],
+            labels: [info.answer1, info.answer2, info.answer3, info.answer4],
             datasets: [{
                 label: '# of Votes',
                 data: [12, 19, 3, 5],
@@ -57,13 +57,10 @@ window.onload = function() {
                 }]
             },
             responsive: false
-
-
         }
     });
 
 
   }, 0000);
-
 
 }
