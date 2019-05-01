@@ -1,17 +1,19 @@
 
 //Save data to use in graph
 window.data;
-
 const getData = async () => {
   let response = await fetch('getPolls');
   window.data = await response.json();
-  //console.log(data.question);
-  //console.log(data);
-
 }
 getData();
 
-
+//Get Votes
+window.votes;
+const getVotes = async () => {
+  let response = await fetch('getPollAnswers');
+  window.votes = await response.json();
+}
+getVotes();
 
 
 window.onload = function() {
@@ -22,7 +24,6 @@ window.onload = function() {
     var textnode = document.createTextNode(info.question);
     node.appendChild(textnode);
     document.getElementById("g").appendChild(node);
-
     var ctx = document.getElementById('myChart');
     var myChart = new Chart(ctx, {
         type: 'bar',
@@ -30,7 +31,7 @@ window.onload = function() {
             labels: [info.answer1, info.answer2, info.answer3, info.answer4],
             datasets: [{
                 label: '# of Votes',
-                data: [12, 19, 3, 5],
+                data: [votes.answer1, votes.answer2, votes.answer3, votes.answer4],
                 backgroundColor: [
                     'rgba(54, 162, 235, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
