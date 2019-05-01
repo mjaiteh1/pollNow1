@@ -48,18 +48,38 @@ app.get('/getPolls', (req, res, next) => {
   });
 });
 
+app.get('/getPollAnswers', (req, res, next) => {
+  res.setHeader("Content-Type", "application/json");
+  res.statusCode = 200;
+  //Getting data & sending to client
+  PollAnswers.find({}, (err, polls) => {
+    res.send(polls[polls.length-1]);
+  });
+
+})
 //Update Question with Votes
 app.put('/updatePoll', (req, res, next) => {
   let name = req.body.name;
-  PollAnswers.findOneAndUpdate(
-  {question: req.body.question},
-  {$inc: {name: 1}},
-  {new: true}
-);
-  PollAnswers.find({}, (err, answers) => {
-    res.send(answers);
+  let query = { _id: req.body.id};
+  PollAnswers.findOneAndUpdate(query,
+    { $inc: {answer4: 1000} },
+    {
+      new: true,                       // return updated doc
+      runValidators: true              // validate before update
+    })
+  .then(doc => {
+    console.log(doc);
+    console.log("hello");
+  })
+  .catch(err => {
+    console.error(err);
   });
 
+
+
+PollAnswers.find({}, (err, polls) => {
+  res.send(polls);
+});
 });
 // Error Handler for 404 Pages
 app.use(function(req, res, next) {
@@ -78,7 +98,12 @@ io.on('connection', (socket) => {
     connect.then(db  =>  {
     let  newPoll  =  new Poll(data);
     newPoll.save();
-
+    window.data;
+    const getData = async () => {
+      let response = await fetch('getPolls');
+      window.data = await response.json();
+    }
+    getData();
     let pollChoice = new PollAnswers({question: data.question});
     pollChoice.save();
 

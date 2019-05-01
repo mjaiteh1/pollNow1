@@ -29,6 +29,7 @@ const socket = io();
     if (dataLength >= 1) {
       //Display latest entry
       let info = data[data.length-1];
+
       //Showing the question
       $('#waiting').hide();
       $('#quest').text(info.question);
@@ -53,16 +54,24 @@ const socket = io();
 
   getData();
 
+window.getID;
+  const getPollAnswers = async () => {
+    let response = await fetch('getPollAnswers');
+    let pollAnswer = await response.json();
+    window.getID = pollAnswer._id;
+  }
+
+  getPollAnswers();
 
 const updatePoll  = async (event)  => {
-  if (!window.data)  {
-    await getData();
+  if (!window.getID)  {
+    await getPollAnswers();
   }
-  console.log(event.value);
-
+  //console.log(event.value);
+  //console.log(data[data.length-1]._id);
   let response =  await fetch('/updatePoll', {
     method: 'PUT',
-    body: JSON.stringify({name: event.value, question: window.data[window.data.length-1].question}), // data can be `string` or {object}!
+    body: JSON.stringify({name: event.value, id: getID}), // data can be `string` or {object}!
     headers:{
       'Content-Type': 'application/json'
     }
