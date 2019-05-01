@@ -77,5 +77,7 @@ const updatePoll  = async (event)  => {
     }
   })
   let response_data = await response.json();
+  window.location.href='/results';
+  
 
 }

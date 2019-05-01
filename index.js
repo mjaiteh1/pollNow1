@@ -19,7 +19,6 @@ server.listen(port, () => {
 })
 //Use to serve up static files
 app.use(express.static(path.join(__dirname, '/public')));
-
 app.use(express.static(__dirname));
 
 app.get('/', (req, res) => {
@@ -39,6 +38,7 @@ app.get('/results', (req,res) => {
 });
 
 //Request data in database
+//GET REQUEST
 app.get('/getPolls', (req, res, next) => {
   res.setHeader("Content-Type", "application/json");
   res.statusCode = 200;
@@ -48,6 +48,7 @@ app.get('/getPolls', (req, res, next) => {
   });
 });
 
+//GET REQUEST
 app.get('/getPollAnswers', (req, res, next) => {
   res.setHeader("Content-Type", "application/json");
   res.statusCode = 200;
@@ -58,6 +59,7 @@ app.get('/getPollAnswers', (req, res, next) => {
 
 })
 //Update Question with Votes
+// PUT REQUEST
 app.put('/updatePoll', (req, res, next) => {
   let name = req.body.name;
   let query = { _id: req.body.id};
@@ -74,8 +76,6 @@ app.put('/updatePoll', (req, res, next) => {
 })
 
 
-
-
 // Error Handler for 404 Pages
 app.use(function(req, res, next) {
     let error404 = new Error('Route Not Found');
@@ -83,8 +83,7 @@ app.use(function(req, res, next) {
     next(error404);
 });
 
-
-
+// Listening for incoming messages
 io.on('connection', (socket) => {
   socket.on('message', (data) => {
     socket.broadcast.emit('info', data);
@@ -93,15 +92,9 @@ io.on('connection', (socket) => {
     connect.then(db  =>  {
     let  newPoll  =  new Poll(data);
     newPoll.save();
-    window.data;
-    const getData = async () => {
-      let response = await fetch('getPolls');
-      window.data = await response.json();
-    }
-    getData();
+
     let pollChoice = new PollAnswers({question: data.question});
     pollChoice.save();
-
 
     //Poll.deleteMany({}, function (err) {
   //if (err) return handleError(err);
