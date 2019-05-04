@@ -96,12 +96,17 @@ io.on('connection', (socket) => {
     let pollChoice = new PollAnswers({question: data.question});
     pollChoice.save();
 
-    //Poll.deleteMany({}, function (err) {
+   //Poll.deleteMany({}, function (err) {
   //if (err) return handleError(err);
   // deleted at most one tank document
 //});
-
-
   });
 });
+
+socket.on('updateReady', (data) => {
+  socket.broadcast.emit('update', data);
+
+});
+
+
 });

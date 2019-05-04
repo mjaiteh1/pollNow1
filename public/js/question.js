@@ -67,8 +67,7 @@ const updatePoll  = async (event)  => {
   if (!window.getID)  {
     await getPollAnswers();
   }
-  //console.log(event.value);
-  //console.log(data[data.length-1]._id);
+
   let response =  await fetch('/updatePoll', {
     method: 'PUT',
     body: JSON.stringify({name: event.value, id: getID}), // data can be `string` or {object}!
@@ -77,7 +76,9 @@ const updatePoll  = async (event)  => {
     }
   })
   let response_data = await response.json();
+
+
   window.location.href='/results';
-  
+  return
 
 }

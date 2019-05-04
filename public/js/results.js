@@ -1,4 +1,4 @@
-
+const socket = io();
 //Save data to use in graph
 window.data;
 const getData = async () => {
@@ -15,10 +15,13 @@ const getVotes = async () => {
 }
 getVotes();
 
-
+window.myChart;
 window.onload = function() {
 
   setTimeout(async function() {
+    if (!window.data) {
+      await getData();
+    }
     let info = data[data.length-1];
     var node = document.createElement("H3");
     var textnode = document.createTextNode(info.question);
@@ -28,9 +31,10 @@ window.onload = function() {
       await getVotes();
     }
     var ctx = document.getElementById('myChart');
-    var myChart = new Chart(ctx, {
+       myChart = new Chart(ctx, {
         type: 'bar',
         data: {
+
             labels: [info.answer1, info.answer2, info.answer3, info.answer4],
             datasets: [{
                 label: '# of Votes',
@@ -64,7 +68,16 @@ window.onload = function() {
         }
     });
 
-
   }, 0000);
+  const updateChart = async (chart) => {
+    if (!window.votes) {await getVotes();}
+    chart.data.datasets[0].data = [votes.answer1, votes.answer2, votes.answer3, votes.answer4];
+    chart.update();
+  }
+
+  setInterval(function(){
+    updateChart(window.myChart);
+  }, 1000);
+
 
 }

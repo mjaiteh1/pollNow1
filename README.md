@@ -2,38 +2,39 @@
 
 ## How to Run
 
-1. cd pollNow
-2. npm install
-3. node index
-4. Go to http://localhost:3000/
-
-## Working features
-
-Click the "Join" button in the join presention form in one tab and then go to http://localhost:3000/ in another tab and click the "create" button on the create a poll form. When a poll is created, it is displayed to all 'pollers' but both pages need to be opened at the same time. 
-
-## Code Explanation
-
-```javascript
-io.on('connection', (socket) => {
-    socket.on('message', (data) => {
-    socket.broadcast.emit('info', data);
-   });
-});
 ```
-When the server begins running, if there is connection to the webSocket then we enter the function. In this function, 
-we listen for a message from the client, in this case called 'message'. When we receive the message then we can use the data that we get anyway we want. In my application, the message is the information from the create a poll page. When the server gets this message then I'm sending that message to every client page in my application. All I would have to do is listen for the message by it's name. I'm using this as a way to send data between pages. 
-
-```javascript
-socket.on('info', (data) => {
-    //Code goes here
-});
+cd pollNow
+npm install 
+node index
 ```
 
-Example of listening of message. 
+## Technologies Used
 
-## Plan going forward
+1. Node
+2. Express
+3. MongoDB 
+4. Socket.io
 
-My next iteration is for the question to be there for the pollers even if they didn't join the same time the question was being created. Maybe this can be acheived through databases to save the questions. I also want to implement a feature where the person who creates a poll can create a poll with a specific username and then pollers can join to answer with a username. 
+## Project Details 
 
-I'm planning to look into MongoDB for a database. 
+For this project, I wanted to build a polling application. I got the idea when I remembered that we used Poll Everywhere in one of the classes and I was interested in figuring in out how it worked. When you open the application you have an option of whether you want to create a poll or join a current poll. As of now, you can't join/create a poll with a username -- you'll be just joining a general poll for everyone. To see how this works, open local host and create a poll. Once you've created a poll, open another tab to local host and join a poll. 
+
+Once you create a poll, you'll be redirected to the results page which pulls up a graph. On your other tab, you'll see a question and 4 answer choices. Currently I've been trying to get the graph to update everytime there is a new click event to the answer choices but that doesn't seem to be working. Some possible solutions: sending a message (using socket)  to the server when a user clicks and then from there update. Refreshing the graph/ figuiring out a way to only update the data so the graph doesn't have to re draw every component. I really wished I had more time to work on this part. 
+
+*** I've noticed that when I started off with an empty dataset and I have both tabs open (create and join) the first answer that I click doesn't get outputted to the graph. I would have to reload the page. But if there are multiple things in the database this doesn't seem to be a problem. ( I probably have to await a resource). 
+
+## Things I've learned
+
+1. Make sure that all your resources are loaded before using them. I found that using ASYNC/AWAIT was helpful with this. There are somethings that the event loop processes faster (like console.log) so if console.log is executed and your resource is not ready then you might run into errors. 
+
+2.  REST API development. I didn't really think that this would be apart of the project but since I was using a database to store my questions, I needed a way to get the data between pages. In this case, websockets alone werent helpful 
+3. Node, Express, MongoDB, Socket.io -- This was my first time using all of these resources. It was a big learning curve, there were moments where I wasn't sure what to do to move forward. From all the issues, I've encountered 
+
+
+## Plans for next time
+
+1. Work on updating the graph everytime another vote comes in.
+2. Work on how resources are loaded. Look for places where I'm calling the API multiple times and see if it can be reduced. 
+3. Join a poll based on user name -- I can store the username in the database and whenever I am presenting a new question on a page determine if that question is from the username the user requested. 
+
 
